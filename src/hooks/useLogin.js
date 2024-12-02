@@ -1,32 +1,32 @@
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { useState } from "react";
-
-const API_URL = "https://localhost:7064/api/Auth";
+import api from "../services/api";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuth();
 
-  const login = async (username, password) => {
+  const login = async (username, password, role) => {
     const success = handleFormErrors(username, password);
     if (!success) {
       return;
     }
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${API_URL}/employer/login`,
+      const loginEndpoint =
+        role === "employer" ? "/Auth/employer/login" : "/Auth/jobseeker/login";
+      const response = await api.post(
+        loginEndpoint,
         {
           username,
           password,
         },
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         },
       );
 
@@ -34,8 +34,9 @@ const useLogin = () => {
       console.log(data);
       if (!data) throw new Error("No data received from the server");
 
-      localStorage.setItem("authUser", JSON.stringify(data));
-      setAuthUser(data);
+      localStorage.setItem("authUser", JSON.stringify(data.user));
+      localStorage.setItem("authToken", data.token);
+      setAuthUser(data.user);
       toast.success("Login successful!");
     } catch (error) {
       toast.error(error?.response?.data?.message);
