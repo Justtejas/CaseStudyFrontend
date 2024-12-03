@@ -6,63 +6,70 @@ import { useAuth } from "../context/AuthContext";
 export const Header = () => {
     const navigate = useNavigate();
     const { authUser } = useAuth();
-    const { logout } = useLogout();
+    const { loading, logout } = useLogout();
 
     return (
-        <header className="bg-slate-900 text-white shadow-md">
-            <div className="container mx-auto flex justify-between items-center py-4 px-6">
-                {/* Logo */}
+        <header className="bg-gradient-to-r from-slate-800 to-purple-900 text-white shadow-md">
+            <div className="container mx-auto flex justify-between items-center py-4 px-8">
                 <h1
-                    className="text-2xl font-bold cursor-pointer hover:text-purple-400"
-                    onClick={() => navigate("/Home")}
+                    className="text-3xl font-bold cursor-pointer hover:text-purple-300 transition"
+                    onClick={() => navigate("/")}
                 >
                     CareerCrafter
                 </h1>
 
-                {/* Navigation Links */}
-                <nav className="flex gap-6">
+                <nav className="flex gap-8">
                     <button
-                        onClick={() => navigate("/Home")}
-                        className="hover:text-purple-400 transition"
+                        onClick={() => navigate("/")}
+                        className="text-lg font-medium hover:text-purple-300 transition"
                     >
                         Home
                     </button>
                     <button
-                        onClick={() => navigate("/BrowseJobs")}
-                        className="hover:text-purple-400 transition"
-                    >
-                        Dashboard
-                    </button>
-                    <button
-                        onClick={() => navigate("/About")}
-                        className="hover:text-purple-400 transition"
+                        onClick={() => navigate("/about")}
+                        className="text-lg font-medium hover:text-purple-300 transition"
                     >
                         About
                     </button>
                 </nav>
 
-                {/* Auth Actions */}
                 <div className="flex gap-4">
-                    {authUser?.userId ? (
-                        <button
-                            onClick={logout}
-                            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-500 transition"
-                        >
-                            Log Out
-                        </button>
+                    {authUser?.userName ? (
+                        !loading ? (
+                            <div className="mt-2">
+                                <button
+                                    className="px-6 py-2 bg-zinc-500 text-white rounded-lg shadow-lg transition-transform transform active:scale-95 hover:bg-blue-600"
+                                    onClick={logout}
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex justify-center items-center mt-2">
+                                <div className="spinner-border animate-spin text-blue-600" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        )
                     ) : (
                         <>
                             <button
-                                onClick={() => navigate("/Profile")}
-                                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-500 transition"
+                                onClick={() => navigate("/login")}
+                                className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-500 transition"
                             >
                                 Log In
                             </button>
                             <button
                                 onClick={() => navigate("/registerJobSeeker")}
-                                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+                                className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
                             >
-                                Sign Up
+                                Register for Job Searching
+                            </button>
+                            <button
+                                onClick={() => navigate("/registerEmployer")}
+                                className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+                            >
+                                Register as Employer
                             </button>
                         </>
                     )}
@@ -71,4 +78,6 @@ export const Header = () => {
         </header>
     );
 };
+
+export default Header;
 

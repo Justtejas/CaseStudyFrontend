@@ -5,69 +5,77 @@ export const SideNav = () => {
     const { authUser } = useAuth();
 
     return (
-        <div className="w-[20%] h-full bg-gray-100 p-6 shadow-lg">
-            {/* Dashboard Title */}
-            <h1 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-2">
-                <i className="ri-profile-line text-indigo-500"></i>
+        <div className="w-[20%] bg-gradient-to-b from-gray-900 via-slate-900 to-gray-800 text-white p-6 flex flex-col">
+            <h1 className="text-2xl font-bold text-gray-100 mb-6 flex items-center gap-2">
                 <span>Dashboard</span>
             </h1>
 
-            {/* Navigation Links */}
-            <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-6">
                 <NavLink
-                    to="/BrowseJobs"
+                    to="/browseJobs"
                     className={({ isActive }) =>
-                        `flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 ${isActive ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                            ? "bg-indigo-500 text-white"
+                            : "text-gray-300 hover:bg-indigo-700 hover:text-white"
                         }`
                     }
                 >
-                    <i className="ri-building-4-fill"></i> Browse Jobs
+                    Browse Jobs
                 </NavLink>
 
                 <NavLink
                     to="/browseJobSeekers"
                     className={({ isActive }) =>
-                        `flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 ${isActive ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                            ? "bg-indigo-500 text-white"
+                            : "text-gray-300 hover:bg-indigo-700 hover:text-white"
                         }`
                     }
                 >
-                    <i className="ri-id-card-line"></i> Job Seekers
+                    Job Seekers
                 </NavLink>
 
                 <NavLink
-                    to="/Profile"
+                    to="/profile"
                     className={({ isActive }) =>
-                        `flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 ${isActive ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                            ? "bg-indigo-500 text-white"
+                            : "text-gray-300 hover:bg-indigo-700 hover:text-white"
                         }`
                     }
                 >
-                    <i className="ri-empathize-fill"></i> Profile
+                    Profile
                 </NavLink>
 
-                {authUser?.role === "EMPLOYER" && (
+                {authUser?.role === "Employer" && (
                     <NavLink
-                        to="/PostJob"
+                        to="/postJob"
                         className={({ isActive }) =>
-                            `flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 ${isActive ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                            `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                                ? "bg-indigo-500 text-white"
+                                : "text-gray-300 hover:bg-indigo-700 hover:text-white"
                             }`
                         }
                     >
-                        <i className="ri-signpost-fill"></i> Post Jobs
+                        Post Jobs
                     </NavLink>
                 )}
-
 
                 <NavLink
                     to="/registerEmployer"
                     className={({ isActive }) =>
-                        `flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 ${isActive ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-indigo-100 hover:text-indigo-600"
+                        `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                            ? "bg-indigo-500 text-white"
+                            : "text-gray-300 hover:bg-indigo-700 hover:text-white"
                         }`
                     }
                 >
-                    <i className="ri-flag-2-fill"></i> Register as Employer
+                    Register as Employer
                 </NavLink>
             </nav>
         </div>
     );
 };
+
+export default SideNav;
 

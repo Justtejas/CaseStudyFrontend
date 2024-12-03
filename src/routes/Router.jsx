@@ -8,6 +8,7 @@ import RegisterEmployer from "../components/RegisterEmployer";
 import RegisterJobSeeker from "../components/RegisterJobSeeker";
 import AddJobListing from "../components/AddJobListing";
 import AddResume from "../components/AddResume";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const Router = () => {
     const { authUser } = useAuth();
@@ -15,22 +16,59 @@ export const Router = () => {
         <Routes>
             <Route
                 path="/"
-                element={authUser ? <Home /> : <Navigate to={"/login"} />}
-            />
-            <Route
-                path="/login"
-                element={authUser ? <Navigate to={"/"} /> : <Login />}
+                element={
+                    <Home />
+                }
             />
             <Route
                 path="/joblisting"
-                element={authUser ? <JobListing /> : <Navigate to={"/login"} />}
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <JobListing />
+                    </ProtectedRoute>
+                }
             />
-            <Route path="/About" element={<About />} />
-            <Route path="/registerEmployer" element={<RegisterEmployer />} />
-            <Route path="/registerJobSeeker" element={<RegisterJobSeeker />} />
-            <Route path="/addJobListing" element={<AddJobListing />} />
-            <Route path="/addResume" element={<AddResume />} />
-            <Route path="*" Component={() => <Navigate to="/" />} />
+            <Route
+                path="/addJobListing"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <AddJobListing />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/addResume"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <AddResume />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/registerEmployer"
+                element={
+                    <RegisterEmployer />
+                }
+            />
+            <Route
+                path="/registerJobSeeker"
+                element={
+                    <RegisterJobSeeker />
+                }
+            />
+            <Route
+                path="/about"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <About />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/login"
+                element={authUser ? <Navigate to="/" /> : <Login />}
+            />
+            <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-    )
+    );
 }
