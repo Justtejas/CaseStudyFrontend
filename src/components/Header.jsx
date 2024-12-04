@@ -12,7 +12,7 @@ export const Header = () => {
         <header className="bg-gradient-to-r from-slate-800 to-purple-900 text-white shadow-md">
             <div className="container mx-auto flex justify-between items-center py-4 px-8">
                 <h1
-                    className="text-3xl font-bold cursor-pointer hover:text-purple-300 transition"
+                    className="text-4xl font-bold cursor-pointer hover:text-purple-300 transition"
                     onClick={() => navigate("/")}
                 >
                     CareerCrafter
@@ -21,13 +21,13 @@ export const Header = () => {
                 <nav className="flex gap-8">
                     <button
                         onClick={() => navigate("/")}
-                        className="text-lg font-medium hover:text-purple-300 transition"
+                        className="text-3xl font-medium hover:text-purple-300 transition"
                     >
                         Home
                     </button>
                     <button
                         onClick={() => navigate("/about")}
-                        className="text-lg font-medium hover:text-purple-300 transition"
+                        className="text-3xl font-medium hover:text-purple-300 transition"
                     >
                         About
                     </button>
@@ -38,7 +38,7 @@ export const Header = () => {
                         !loading ? (
                             <div className="mt-2">
                                 <button
-                                    className="px-6 py-2 bg-zinc-500 text-white rounded-lg shadow-lg transition-transform transform active:scale-95 hover:bg-blue-600"
+                                    className="px-6 py-4 text-2xl -mr-32 bg-zinc-500 text-white rounded-lg shadow-lg transition-transform transform active:scale-95 hover:bg-blue-600"
                                     onClick={logout}
                                 >
                                     Logout

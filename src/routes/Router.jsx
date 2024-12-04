@@ -9,6 +9,8 @@ import RegisterJobSeeker from "../components/RegisterJobSeeker";
 import AddJobListing from "../components/AddJobListing";
 import AddResume from "../components/AddResume";
 import ProtectedRoute from "../components/ProtectedRoute";
+import JobSeekerProfile from "../components/JobSeekerProfile";
+import EmployerProfile from "../components/EmployerProfile";
 
 export const Router = () => {
     const { authUser } = useAuth();
@@ -21,7 +23,7 @@ export const Router = () => {
                 }
             />
             <Route
-                path="/joblisting"
+                path="/joblistings"
                 element={
                     <ProtectedRoute authUser={authUser}>
                         <JobListing />
@@ -67,6 +69,22 @@ export const Router = () => {
             <Route
                 path="/login"
                 element={authUser ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+                path="/jobSeekerProfile"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <JobSeekerProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/employerProfile"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <EmployerProfile />
+                    </ProtectedRoute>
+                }
             />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
