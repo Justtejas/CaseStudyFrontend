@@ -64,7 +64,9 @@ const ApplicationService = {
 
     updateApplication: async (applicationId, applicationStatus) => {
         try {
-            const response = await api.put(`/application/UpdateApplication/${applicationId}`, applicationStatus);
+            const response = await api.put(
+                `/application/UpdateApplication/${applicationId}/${applicationStatus}`,
+            );
             return response.data;
         } catch (error) {
             console.error(`Error updating application with ID ${applicationId}:`, error.response ? error.response.data : error);

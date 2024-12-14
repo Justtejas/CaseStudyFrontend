@@ -71,7 +71,7 @@ const JobListing = () => {
     };
 
     return (
-        <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-blue-900 via-blue-800 to-blue-600 text-black">
+        <div className="min-h-screen w-full flex flex-col g-gradient-to-b from-blue-900 via-blue-800 to-blue-600 text-black">
             <Header />
             <div className="flex-grow mx-auto max-w-screen-xl">
                 <h1 className="text-4xl font-bold text-center mt-8 mb-6 text-white">Job Listings</h1>

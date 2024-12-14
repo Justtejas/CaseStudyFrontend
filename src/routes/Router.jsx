@@ -11,6 +11,9 @@ import AddResume from "../components/AddResume";
 import ProtectedRoute from "../components/ProtectedRoute";
 import JobSeekerProfile from "../components/JobSeekerProfile";
 import EmployerProfile from "../components/EmployerProfile";
+import ApplicationList from "../components/ApplicationList";
+import EmployerJobListings from "../components/EmployerJobListings";
+import JobSeekersList from "../components/JobSeekerList";
 
 export const Router = () => {
     const { authUser } = useAuth();
@@ -35,6 +38,22 @@ export const Router = () => {
                 element={
                     <ProtectedRoute authUser={authUser}>
                         <AddJobListing />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/employerJobListings"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <EmployerJobListings />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/jobseekerlist"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <JobSeekersList />
                     </ProtectedRoute>
                 }
             />
@@ -83,6 +102,14 @@ export const Router = () => {
                 element={
                     <ProtectedRoute authUser={authUser}>
                         <EmployerProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/myapplications"
+                element={
+                    <ProtectedRoute authUser={authUser}>
+                        <ApplicationList />
                     </ProtectedRoute>
                 }
             />

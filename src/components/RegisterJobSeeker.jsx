@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerJobSeeker } from "../services/RegisterService";
+import { toast } from "react-toastify";
 
 const RegisterJobSeeker = () => {
+    const navigate = useNavigate(); // Initialize the useNavigate hook
     const [formData, setFormData] = useState({
         jobSeekerName: "",
         userName: "",
@@ -23,14 +27,37 @@ const RegisterJobSeeker = () => {
         endDate: "",
     });
 
+    // Handle form field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    // Handle form submission
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitted Data:", formData);
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match.");
+            return;
+        }
+
+        try {
+            // Call the registerJobSeeker service
+            const response = await registerJobSeeker(formData);
+            console.log(response)
+
+            if (response.success) {
+                toast.success("Job Seeker registered successfully!");
+                // Redirect to login page after successful registration
+                navigate("/login");
+            } else {
+                toast.error(response.message || "Registration failed.");
+            }
+        } catch (error) {
+            toast.error("An error occurred while registering.");
+            console.error("Registration Error:", error);
+        }
     };
 
     return (
@@ -163,6 +190,7 @@ const RegisterJobSeeker = () => {
                 </div>
 
                 {/* Remaining Fields */}
+                {/* Remaining Fields */}
                 {[
                     { label: "Contact Phone", name: "contactPhone", type: "text" },
                     { label: "Address", name: "address", type: "textarea" },
@@ -207,7 +235,6 @@ const RegisterJobSeeker = () => {
                         )}
                     </div>
                 ))}
-
                 {/* Submit Button */}
                 <div className="col-span-2">
                     <button

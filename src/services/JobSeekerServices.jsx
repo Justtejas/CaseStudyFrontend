@@ -1,5 +1,4 @@
 import api from './api';
-import { toast } from 'react-toastify';
 
 const JobSeekerService = {
     getAllJobSeekers: async () => {
@@ -7,7 +6,7 @@ const JobSeekerService = {
             const response = await api.get('/JobSeeker/GetAllJobSeekers');
             return response.data;
         } catch (error) {
-            toast.error('Error fetching all JobSeekers:', error.response ? error.response.data : error);
+            console.error('Error fetching all JobSeekers:', error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -17,7 +16,7 @@ const JobSeekerService = {
             const response = await api.put(`/JobSeeker/UpdateJobSeeker/${jobSeekerId}`, jobSeekerData);
             return response.data;
         } catch (error) {
-            toast.error(`Error updating JobSeeker with ID ${jobSeekerId}:`, error.response ? error.response.data : error);
+            console.error(`Error updating JobSeeker with ID ${jobSeekerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -27,7 +26,7 @@ const JobSeekerService = {
             const response = await api.get(`/JobSeeker/GetJobSeekerByUserName/${userName}`);
             return response.data;
         } catch (error) {
-            toast.error(`Error fetching JobSeeker with username ${userName}:`, error.response ? error.response.data : error);
+            console.error(`Error fetching JobSeeker with username ${userName}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -37,7 +36,7 @@ const JobSeekerService = {
             const response = await api.get(`/JobSeeker/GetJobSeekerByJobSeekerId/${jobSeekerId}`);
             return response.data;
         } catch (error) {
-            toast.error(`Error fetching JobSeeker with username ${jobSeekerId}:`, error.response ? error.response.data : error);
+            console.error(`Error fetching JobSeeker with username ${jobSeekerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -47,7 +46,7 @@ const JobSeekerService = {
             const response = await api.delete(`/JobSeeker/DeleteJobSeeker/${jobSeekerId}`);
             return response.data;
         } catch (error) {
-            toast.error(`Error deleting JobSeeker with ID ${jobSeekerId}:`, error.response ? error.response.data : error);
+            console.error(`Error deleting JobSeeker with ID ${jobSeekerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },

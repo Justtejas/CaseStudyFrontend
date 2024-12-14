@@ -11,6 +11,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(username, password, role);
         await login(username, password, role);
     };
 
@@ -82,7 +83,15 @@ const Login = () => {
                         to="/registerEmployer"
                         className="text-xl hover:underline hover:text-blue-300 ml-2 inline-block text-white"
                     >
-                        Don't have an account? Sign up
+                        Register as Employer
+                    </Link>
+                </div>
+                <div className="text-center mt-4">
+                    <Link
+                        to="/registerJobSeeker"
+                        className="text-xl hover:underline hover:text-blue-300 ml-2 inline-block text-white"
+                    >
+                        Register as Job Seeker
                     </Link>
                 </div>
             </div>

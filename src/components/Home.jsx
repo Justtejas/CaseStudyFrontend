@@ -28,7 +28,7 @@ const Home = () => {
                         {!authUser ? (
                             <div className="mt-6 space-x-4">
                                 <Link
-                                    to={"/register"}
+                                    to={"/registerEmployer"}
                                     className="px-6 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 transition"
                                 >
                                     Get Started

@@ -27,7 +27,7 @@ export const SideNav = () => {
                 )}
                 {authUser.role === "Employer" && (
                     <NavLink
-                        to="/browseJobSeekers"
+                        to="/jobseekerlist"
                         className={({ isActive }) =>
                             `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
                                 ? "bg-indigo-500 text-white"
@@ -64,9 +64,24 @@ export const SideNav = () => {
                     </NavLink>
                 )}
 
+                {authUser.role === "JobSeeker" && (
+                    <NavLink
+                        to="/myapplications"
+                        className={({ isActive }) =>
+                            `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                                ? "bg-indigo-500 text-white"
+                                : "text-gray-300 hover:bg-indigo-700 hover:text-white"
+                            }`
+                        }
+                    >
+                        My Applications
+                    </NavLink>
+
+                )}
+
                 {authUser?.role === "Employer" && (
                     <NavLink
-                        to="/postJob"
+                        to="/addJobListing"
                         className={({ isActive }) =>
                             `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
                                 ? "bg-indigo-500 text-white"
@@ -75,6 +90,19 @@ export const SideNav = () => {
                         }
                     >
                         Post Jobs
+                    </NavLink>
+                )}
+                {authUser?.role === "Employer" && (
+                    <NavLink
+                        to="/employerJobListings"
+                        className={({ isActive }) =>
+                            `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${isActive
+                                ? "bg-indigo-500 text-white"
+                                : "text-gray-300 hover:bg-indigo-700 hover:text-white"
+                            }`
+                        }
+                    >
+                        Job Listings
                     </NavLink>
                 )}
             </nav>

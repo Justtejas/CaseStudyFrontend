@@ -19,7 +19,7 @@ const useLogout = () => {
       if (res.error) {
         throw new Error(res.error);
       }
-      localStorage.removeItem("authUser");
+        localStorage.clear();
       setAuthUser(null);
     } catch (err) {
       toast.error(err.message, { duration: 1500 });

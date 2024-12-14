@@ -37,7 +37,7 @@ const EmployerProfile = () => {
 
     const filteredProfileData = profileData
         ? Object.entries(profileData).filter(
-            ([key]) => key !== "$id" && key !== "password" // Exclude $id and password
+            ([key]) => key !== "$id" && key !== "password"
         )
         : [];
 
@@ -75,10 +75,8 @@ const EmployerProfile = () => {
 
     return (
         <div className="flex flex-col min-h-screen w-full">
-            {/* Header */}
             <Header />
 
-            {/* Main Content */}
             <div className="flex-1 flex items-center justify-center bg-gradient-to-b from-blue-900 via-blue-800 to-blue-600 text-white">
                 <div className="bg-white text-gray-800 shadow-lg rounded-lg p-6 w-2/4">
                     <h1 className="text-center text-2xl font-bold mb-4 text-blue-900">Employer Profile</h1>

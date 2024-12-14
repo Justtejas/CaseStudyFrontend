@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { registerEmployer } from "../services/RegisterService"; // Import the registerEmployer service
+import { useNavigate } from "react-router-dom"; // To navigate to login page after successful registration
 
 const RegisterEmployer = () => {
     const [formData, setFormData] = useState({
@@ -11,39 +14,37 @@ const RegisterEmployer = () => {
         companyName: "",
         contactPhone: "",
     });
-    const [role, setRole] = useState("");
+    const navigate = useNavigate(); // Initialize useHistory hook for navigation
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted", formData);
-        alert("Form submitted")
-        // Add validation and API submission logic here
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match!");
+            return;
+        }
+
+        try {
+            const response = await registerEmployer(formData);
+            console.log(response)
+            if (response.success) {
+                toast.success("Employer registered successfully!");
+                navigate("/login");
+            }
+        } catch (error) {
+            console.error("Registration error", error);
+            toast.error("An error occurred during registration. Please try again.");
+        }
     };
 
     return (
         <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-xl mx-auto">
             <h2 className="text-3xl font-semibold mb-8 text-center">Register as Employer</h2>
-            <div className="mt-8 text-center text-white">
-                <button
-                    className={`px-4 py-2 rounded-md transition transform active:scale-95 ${role === "employer" ? "bg-blue-400 " : "bg-gray-500"}`}
-                    onClick={() => setRole("employer")}
-                    title="Login as Employer"
-                >
-                    Employer
-                </button>
-                <button
-                    className={`px-4 py-2 rounded-md transition transform active:scale-95 ${role === "jobseeker" ? "bg-blue-400" : "bg-gray-500"} ml-4`}
-                    onClick={() => setRole("jobseeker")}
-                    title="Login as Job Seeker"
-                >
-                    Job Seeker
-                </button>
-            </div>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                     <label htmlFor="employerName" className="block text-sm font-medium mb-2">
@@ -179,6 +180,21 @@ const RegisterEmployer = () => {
                     Register
                 </button>
             </form>
+
+            <div className="mt-6 text-center">
+                <p>
+                    <a href="/registerJobSeeker" className="text-blue-500 hover:underline">
+                        Register as Job Seeker?
+                    </a>
+                </p>
+            </div>
+            <div className="mt-6 text-center">
+                <p>
+                    <a href="/login" className="text-blue-500 hover:underline">
+                        Already have an account?
+                    </a>
+                </p>
+            </div>
         </div>
     );
 };
