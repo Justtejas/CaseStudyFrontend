@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { registerEmployer } from "../services/RegisterService"; // Import the registerEmployer service
-import { useNavigate } from "react-router-dom"; // To navigate to login page after successful registration
+import { registerEmployer } from "../services/RegisterService";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterEmployer = () => {
     const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const RegisterEmployer = () => {
         companyName: "",
         contactPhone: "",
     });
-    const navigate = useNavigate(); // Initialize useHistory hook for navigation
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -188,13 +188,20 @@ const RegisterEmployer = () => {
                     </a>
                 </p>
             </div>
-            <div className="mt-6 text-center">
+            <Link className="mt-6 text-center">
                 <p>
                     <a href="/login" className="text-blue-500 hover:underline">
                         Already have an account?
                     </a>
                 </p>
-            </div>
+            </Link>
+            <Link className="mt-6 text-center">
+                <p>
+                    <a href="/" className="text-blue-500 hover:underline">
+                    Go Back To Home
+                    </a>
+                </p>
+            </Link>
         </div>
     );
 };

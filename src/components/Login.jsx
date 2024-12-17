@@ -16,7 +16,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col lg:w-1/4 items-center justify-center min-w-96 mx-auto">
+        <div className="flex flex-col lg:w-1/4 items-center justify-center min-w-96 mx-auto ">
             <div className="w-full p-16 rounded-lg shadow-lg bg-gray-700 bg-opacity-90">
                 <h1 className="text-4xl font-semibold text-center text-white">
                     Login to <span className="text-blue-400">Career Crafter</span>
@@ -65,7 +65,7 @@ const Login = () => {
                     </div>
                     <button
                         type="submit"
-                        className={`my-2 w-full flex items-center justify-center py-2 rounded-md bg-zinc-50 hover:bg-blue-400 transition transform active:scale-95 ${loading ? "opacity-50 cursor-not-allowed" : ""
+                        className={`my-14 w-full flex items-center justify-center py-2 rounded-md bg-zinc-50 hover:bg-blue-400 transition transform active:scale-95 ${loading ? "opacity-50 cursor-not-allowed" : ""
                             }`}
                         disabled={loading}
                     >
@@ -92,6 +92,14 @@ const Login = () => {
                         className="text-xl hover:underline hover:text-blue-300 ml-2 inline-block text-white"
                     >
                         Register as Job Seeker
+                    </Link>
+                </div>
+                <div className="text-center mt-4">
+                    <Link
+                        to="/"
+                        className="text-xl hover:underline hover:text-blue-300 ml-2 inline-block text-white"
+                    >
+                        Go Back to Home
                     </Link>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerJobSeeker } from "../services/RegisterService";
 import { toast } from "react-toastify";
 
 const RegisterJobSeeker = () => {
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         jobSeekerName: "",
         userName: "",
@@ -27,13 +27,11 @@ const RegisterJobSeeker = () => {
         endDate: "",
     });
 
-    // Handle form field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -43,13 +41,11 @@ const RegisterJobSeeker = () => {
         }
 
         try {
-            // Call the registerJobSeeker service
             const response = await registerJobSeeker(formData);
             console.log(response)
 
             if (response.success) {
                 toast.success("Job Seeker registered successfully!");
-                // Redirect to login page after successful registration
                 navigate("/login");
             } else {
                 toast.error(response.message || "Registration failed.");
@@ -61,7 +57,7 @@ const RegisterJobSeeker = () => {
     };
 
     return (
-        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-6xl mx-auto">
+        <div className="bg-white p-10 rounded-lg h-3/3 shadow-lg w-full max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-700">
                 Job Seeker Registration
             </h2>
@@ -69,7 +65,6 @@ const RegisterJobSeeker = () => {
                 onSubmit={handleSubmit}
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
-                {/* Job Seeker Name */}
                 <div>
                     <label
                         htmlFor="jobSeekerName"
@@ -88,7 +83,6 @@ const RegisterJobSeeker = () => {
                     />
                 </div>
 
-                {/* Username */}
                 <div>
                     <label
                         htmlFor="userName"
@@ -108,7 +102,6 @@ const RegisterJobSeeker = () => {
                     />
                 </div>
 
-                {/* Email */}
                 <div>
                     <label
                         htmlFor="email"
@@ -127,7 +120,6 @@ const RegisterJobSeeker = () => {
                     />
                 </div>
 
-                {/* Password */}
                 <div>
                     <label
                         htmlFor="password"
@@ -148,7 +140,6 @@ const RegisterJobSeeker = () => {
                     />
                 </div>
 
-                {/* Confirm Password */}
                 <div>
                     <label
                         htmlFor="confirmPassword"
@@ -167,7 +158,6 @@ const RegisterJobSeeker = () => {
                     />
                 </div>
 
-                {/* Gender */}
                 <div>
                     <label
                         htmlFor="gender"
@@ -189,8 +179,6 @@ const RegisterJobSeeker = () => {
                     </select>
                 </div>
 
-                {/* Remaining Fields */}
-                {/* Remaining Fields */}
                 {[
                     { label: "Contact Phone", name: "contactPhone", type: "text" },
                     { label: "Address", name: "address", type: "textarea" },
@@ -235,7 +223,6 @@ const RegisterJobSeeker = () => {
                         )}
                     </div>
                 ))}
-                {/* Submit Button */}
                 <div className="col-span-2">
                     <button
                         type="submit"
@@ -244,6 +231,21 @@ const RegisterJobSeeker = () => {
                         Register
                     </button>
                 </div>
+
+                <Link className="mt-6 text-center">
+                    <p>
+                        <a href="/login" className="text-blue-500 hover:underline">
+                            Already have an account?
+                        </a>
+                    </p>
+                </Link>
+                <Link className="mt-6 text-center">
+                    <p>
+                        <a href="/" className="text-blue-500 hover:underline">
+                            Go Back To Home
+                        </a>
+                    </p>
+                </Link>
             </form>
         </div>
     );
