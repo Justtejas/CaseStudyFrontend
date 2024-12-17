@@ -37,10 +37,9 @@ const JobListing = () => {
 
     const handleSearch = (searchTerm) => {
         setSearchTerm(searchTerm);
-        // Ensure searchTerm is a string before using trim
         const searchQuery = (searchTerm || '').trim();
         if (searchQuery === '') {
-            setFilteredListings(jobListings);  // If search term is empty, show all listings
+            setFilteredListings(jobListings);  
         } else {
             const filtered = jobListings.filter((job) =>
                 job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -96,7 +95,6 @@ const JobListing = () => {
                     </div>
                 </div>
 
-                {/* Loading Spinner */}
                 {loading ? (
                     <div className="text-center py-8">
                         <div className="spinner-border text-light" role="status">
@@ -111,8 +109,6 @@ const JobListing = () => {
                                 <p className="text-md text-gray-600">{job.companyName}</p>
                                 <p className="text-sm my-2">{job.location}</p>
                                 <p className="text-sm">Salary: ${job.salary}</p>
-
-                                {/* Button to open modal */}
                                 <button
                                     className="bg-blue-600 text-white p-2 rounded mt-4 w-full"
                                     onClick={() => openJobModal(job)}
@@ -125,7 +121,6 @@ const JobListing = () => {
                 )}
             </div>
 
-            {/* Modal for Job Details */}
             {selectedJob && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded-lg max-w-lg w-full space-y-6">

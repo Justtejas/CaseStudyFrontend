@@ -14,7 +14,6 @@ const ApplicationList = () => {
     const [error, setError] = useState(null);
     const { authUser } = useAuth();
 
-    // Fetch job listing details
     const fetchJobListingDetails = async (applications) => {
         const jobListingData = {};
         await Promise.all(
@@ -50,7 +49,7 @@ const ApplicationList = () => {
 
     const handleCancel = async (applicationId) => {
         try {
-            const status = "Cancelled";  // Ensure this is one of 'Confirmed', 'Pending', or 'Cancelled'
+            const status = "Cancelled";  
             await ApplicationService.updateApplication(applicationId, status);
             console.log(applications)
             toast.success("Application cancelled successfully!");
@@ -75,7 +74,7 @@ const ApplicationList = () => {
                     You've not applied to any jobs
                 </p>
                 <Link
-                    to="/" // Navigate to home page
+                    to="/"
                     className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all inline-block"
                 >
                     Go Back to Home
@@ -87,31 +86,49 @@ const ApplicationList = () => {
         <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-blue-900 via-blue-800 to-blue-600">
             <Header />
             <div className="flex-grow container mx-auto max-w-screen-xl">
-                <h1 className="text-white text-2xl font-bold mb-6">My Applications</h1>
+                <div className="bg-white rounded-lg shadow p-4 m-4">
+                    <h1 className="text-2xl font-bold text-center text-blue-500">My Applications</h1>
+                </div>
                 {applications.length > 0 ? (
                     <ul className="space-y-6">
                         {applications.map((app, index) => (
-                            <li key={app.applicationId} className="bg-white rounded-lg shadow p-4">
-                                <h2 className="text-lg font-bold text-gray-700">
-                                    Application {index + 1}
+                            <li key={app.applicationId} className="bg-white rounded-lg shadow p-4 m-4">
+                                <h2 className="text-lg font-bold  text-blue-500">
+                                    {jobListings[app.jobListingId].jobTitle}
                                 </h2>
                                 <p className="text-sm text-gray-600">
                                     <span className="font-semibold">Application Date:</span>{" "}
                                     {new Date(app.applicationDate).toLocaleDateString()}
                                 </p>
-                                <p className="text-sm text-gray-600">
-                                    <span className="font-semibold">Status:</span> {app.applicationStatus}
+                                <p className="text-sm ">
+                                    <span className="font-semibold text-gray-600">Status:</span> <span className={`${app.applicationStatus === "Cancelled" ? "text-red-800 font-bold" : "text-gray-600"}`}>{app.applicationStatus}</span>
                                 </p>
                                 {jobListings[app.jobListingId] ? (
                                     <div className="mt-4 bg-gray-100 rounded p-3">
                                         <h3 className="font-semibold text-gray-800">Job Details:</h3>
                                         <p className="text-sm text-gray-600">
-                                            <span className="font-semibold">Title:</span>{" "}
-                                            {jobListings[app.jobListingId]?.jobTitle || "N/A"}
-                                        </p>
-                                        <p className="text-sm text-gray-600">
                                             <span className="font-semibold">Company:</span>{" "}
                                             {jobListings[app.jobListingId]?.companyName || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-semibold">Location:</span>{" "}
+                                            {jobListings[app.jobListingId]?.location || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-semibold">Salary:</span>{" "}
+                                            {jobListings[app.jobListingId]?.salary || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-semibold">Description:</span>{" "}
+                                            {jobListings[app.jobListingId]?.jobDescription || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-semibold">Required Skills:</span>{" "}
+                                            {jobListings[app.jobListingId]?.requiredSkills || "N/A"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-semibold">Hiring Flow:</span>{" "}
+                                            {jobListings[app.jobListingId]?.hiringWorkflow || "N/A"}
                                         </p>
                                     </div>
                                 ) : (
