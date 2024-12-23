@@ -9,6 +9,7 @@ const EmployerJobListings = () => {
     const { authUser } = useAuth();
     const [jobListings, setJobListings] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectJobListingId, setSelectedJobListingId] = useState("")
     const [isEditing, setIsEditing] = useState(false);
     const [currentJobListing, setCurrentJobListing] = useState(null);
     const [isViewingApplications, setIsViewingApplications] = useState(false);
@@ -51,6 +52,7 @@ const EmployerJobListings = () => {
 
     const handleDelete = async (jobListingId) => {
         try {
+            console.log(jobListingId)
             await JobListingService.deleteJobListing(jobListingId);
             toast.success('Job listing deleted successfully');
             fetchEmployerJobListings();
@@ -103,7 +105,6 @@ const EmployerJobListings = () => {
             <div className="flex-grow mx-auto max-w-screen-xl px-4">
                 <h1 className="text-4xl font-bold text-center mt-8 mb-6 text-white">Your Job Listings</h1>
 
-                {/* Loading Spinner */}
                 {loading ? (
                     <div className="text-center py-8">
                         <div className="spinner-border text-light" role="status">
@@ -119,7 +120,6 @@ const EmployerJobListings = () => {
                                 <p className="text-gray-600">{job.location}</p>
                                 <p className="text-gray-600 mt-2">Salary: ${job.salary}</p>
 
-                                {/* Action buttons with spacing */}
                                 <div className="mt-4 space-x-4">
                                     <button
                                         className="bg-blue-600 text-white px-4 py-2 rounded-md"
@@ -127,6 +127,7 @@ const EmployerJobListings = () => {
                                     >
                                         Edit
                                     </button>
+                                    {console.log(job)}
                                     <button
                                         className="bg-red-600 text-white px-4 py-2 rounded-md"
                                         onClick={() => handleDelete(job.jobListingId)}

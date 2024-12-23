@@ -75,7 +75,6 @@ const JobListing = () => {
             <div className="flex-grow mx-auto max-w-screen-xl">
                 <h1 className="text-4xl font-bold text-center mt-8 mb-6 text-white">Job Listings</h1>
 
-                {/* Search Bar */}
                 <div className="flex justify-between items-center mb-6 px-6">
                     <div className="w-full flex">
                         <input
