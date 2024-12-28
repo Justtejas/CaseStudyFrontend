@@ -16,7 +16,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col lg:w-1/4 items-center justify-center min-w-96 mx-auto ">
+        <div className="flex flex-col lg:w-2/4 items-center justify-center min-w-96 mx-auto ">
             <div className="w-full p-16 rounded-lg shadow-lg bg-gray-700 bg-opacity-90">
                 <h1 className="text-4xl font-semibold text-center text-white">
                     Login to <span className="text-blue-400">Career Crafter</span>

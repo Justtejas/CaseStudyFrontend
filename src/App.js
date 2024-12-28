@@ -5,7 +5,13 @@ function App() {
   return (
     <div className="bg-gradient-to-b from-blue-900 via-blue-800 to-blue-600 h-screen flex items-center justify-center">
       <Router />
-      <ToastContainer />
+      <ToastContainer
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover={false}
+        draggable={false}
+      />
     </div>
   );
 }

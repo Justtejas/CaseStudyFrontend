@@ -80,9 +80,7 @@ export const Router = () => {
             <Route
                 path="/about"
                 element={
-                    <ProtectedRoute authUser={authUser}>
-                        <About />
-                    </ProtectedRoute>
+                    <About />
                 }
             />
             <Route

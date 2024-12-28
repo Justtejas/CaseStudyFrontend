@@ -8,44 +8,70 @@ const About = () => {
     document.title = "CareerCrafter | About";
     const { authUser } = useAuth();
 
+    if (authUser === undefined) {
+        return (
+            <div className="w-full h-screen flex flex-col text-white">
+                <Header />
+                <div className="flex flex-grow">
+                    <main className="w-full md:w-4/5 flex flex-col items-center p-6 mt-4 overflow-auto gap-8">
+                        <div className="text-center bg-gradient-to-br from-slate-800 via-indigo-900 to-gray-900 p-8 rounded-lg shadow-lg w-full max-w-4xl">
+                            <div
+                                className="animate-spin rounded-full h-6 w-6 border-2 border-t-transparent border-blue-500"
+                                role="status"
+                            ></div>
+                        </div>
+                    </main>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
     const aboutContent =
         authUser?.role === "JobSeeker" ? (
             <>
-                <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">
-                    Empowering Job Seekers
-                </h1>
+                <h1 className="text-4xl font-bold mb-4">Empowering Job Seekers</h1>
                 <p className="text-lg leading-7">
-                    At CareerCrafter, we believe in helping job seekers take charge of their career journey.
-                    Whether you're looking for your first job, a career change, or a fresh start, our platform
-                    connects you with opportunities that match your aspirations.
+                    At CareerCrafter, we empower job seekers to take control of their career paths. Whether you're just starting, switching fields, or aiming for the next big opportunity, we’re here to connect you with roles that match your skills and aspirations.
                 </p>
-                <p className="mt-4 text-gray-300">
-                    Browse job listings, upload your resume, and take the next step towards your dream job!
-                </p>
+                <ul className="list-disc list-inside mt-4 text-gray-300">
+                    <li>Explore opportunities with comprehensive job listings tailored to your needs.</li>
+                    <li>Showcase your talent by uploading your resume and letting employers discover your unique potential.</li>
+                    <li>Achieve your goals with tools and resources to support every step of your career journey.</li>
+                </ul>
             </>
         ) : authUser?.role === "Employer" ? (
             <>
-                <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-500">
-                    Connecting Employers with Talent
-                </h1>
+                <h1 className="text-4xl font-bold mb-4">Connecting Employers with Talent</h1>
                 <p className="text-lg leading-7">
-                    CareerCrafter simplifies hiring for employers. Post job listings, manage applications, and
-                    find skilled professionals to meet your company's needs.
+                    CareerCrafter streamlines recruitment for employers, helping you find the right professionals to build your team. With our platform, hiring becomes faster, easier, and more effective.
                 </p>
-                <p className="mt-4 text-gray-300">
-                    Build your dream team and drive your business forward with ease and efficiency.
-                </p>
+                <ul className="list-disc list-inside mt-4 text-gray-300">
+                    <li>Post jobs effortlessly to attract top talent.</li>
+                    <li>Find the perfect fit with advanced filters and tools for candidate discovery.</li>
+                    <li>Manage applications seamlessly to keep your hiring process organized and efficient.</li>
+                </ul>
             </>
         ) : (
-            <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-600">
-                Welcome to CareerCrafter
-            </h1>
+            <>
+                <h1 className="text-4xl font-bold mx-auto p-4">
+                    Welcome to CareerCrafter
+                </h1>
+                <p className="text-2xl leading-9 text-justify py-4">
+                    CareerCrafter is a dynamic platform designed to bridge the gap between ambitious job seekers and forward-thinking employers. Whether you’re pursuing a career change or expanding your team, CareerCrafter offers the tools and connections you need to thrive.
+                </p>
+                <ul className="mt-6 text-2xl py-6 text-justify leading-9">
+                    <li className="py-2"><span className="font-bold">Your Career Partner</span>: Our user-friendly platform adapts to your professional needs.</li>
+                    <li className="py-2"><span className="font-bold">Trusted Community</span>: Join thousands of users finding success every day.</li>
+                    <li className="py-2"><span className="font-bold">Comprehensive Resources</span>: Access guidance, tools, and insights tailored to your goals.</li>
+                </ul>
+            </>
         );
 
     return (
-        <div className="w-full h-screen flex flex-col bg-gradient-to-b from-gray-900 via-slate-900 to-gray-800 text-white">
+        <div className="w-full h-screen flex flex-col text-white">
             <Header />
-            <div className="flex flex-grow">
+            <div className="flex flex-grow justify-center">
                 <SideNav />
                 <main className="w-full md:w-4/5 flex flex-col items-center p-6 mt-4 overflow-auto gap-8">
                     <div className="text-center bg-gradient-to-br from-slate-800 via-indigo-900 to-gray-900 p-8 rounded-lg shadow-lg w-full max-w-4xl">
@@ -59,3 +85,4 @@ const About = () => {
 };
 
 export default About;
+
