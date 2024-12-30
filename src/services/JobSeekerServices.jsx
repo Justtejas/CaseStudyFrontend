@@ -36,7 +36,7 @@ const JobSeekerService = {
             const response = await api.get(`/JobSeeker/GetJobSeekerByJobSeekerId/${jobSeekerId}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching JobSeeker with username ${jobSeekerId}:`, error.response ? error.response.data : error);
+            console.error(`Error fetching JobSeeker with jobSeekerId ${jobSeekerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },

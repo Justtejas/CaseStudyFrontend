@@ -10,7 +10,6 @@ const JobListingService = {
             }
             return response.data.data.$values;
         } catch (error) {
-            console.error(error.response?.data?.Error || 'Error fetching job listings');
             throw error;
         }
     },
@@ -20,7 +19,6 @@ const JobListingService = {
             const response = await api.get(`JobListing/GetJobListingsById/${jobListingId}`);
             return response.data;
         } catch (error) {
-            console.error(error.response?.data?.Error || 'Error fetching job listing details');
             throw error;
         }
     },
@@ -33,8 +31,6 @@ const JobListingService = {
             }
             return response.data.data.$values;
         } catch (error) {
-            console.log(error)
-            console.error(error.response?.data?.Error || 'Error fetching job listing details');
             throw error;
         }
     },
@@ -43,7 +39,6 @@ const JobListingService = {
             const response = await api.delete(`JobListing/DeleteJobListing/${jobListingId}`);
             return response.data?.message;
         } catch (error) {
-            console.error(error.response?.data?.Error || 'Error deleting job listing');
             throw error;
         }
     },
@@ -52,7 +47,6 @@ const JobListingService = {
             const response = await api.post('JobListing/CreateJobListing', jobListingData);
             return response.data;
         } catch (error) {
-            console.error(error.response?.data?.Error || 'Error creating job listing');
             throw error;
         }
     },
@@ -62,7 +56,6 @@ const JobListingService = {
             const response = await api.put(`JobListing/UpdateJobListing/${jobListingId}`, jobListingData);
             return response.data;
         } catch (error) {
-            console.error(error.response?.data?.Error || 'Error updating job listing');
             throw error;
         }
     },

@@ -49,7 +49,7 @@ const ApplicationList = () => {
 
     const handleCancel = async (applicationId) => {
         try {
-            const status = "Cancelled";  
+            const status = "Cancelled";
             await ApplicationService.updateApplication(applicationId, status);
             console.log(applications)
             toast.success("Application cancelled successfully!");
@@ -91,7 +91,7 @@ const ApplicationList = () => {
                 </div>
                 {applications.length > 0 ? (
                     <ul className="space-y-6">
-                        {applications.map((app, index) => (
+                        {applications.map((app) => (
                             <li key={app.applicationId} className="bg-white rounded-lg shadow p-4 m-4">
                                 <h2 className="text-lg font-bold  text-blue-500">
                                     {jobListings[app.jobListingId].jobTitle}

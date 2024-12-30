@@ -17,7 +17,6 @@ const EmployerProfile = () => {
         const fetchProfile = async () => {
             try {
                 const data = await EmployerService.getEmployerByEmployerId(authUser.employerId);
-                console.log(data)
                 setProfileData(data.data);
                 setFormData(data.data);
             } catch (error) {
@@ -46,8 +45,8 @@ const EmployerProfile = () => {
 
         try {
             if (authUser?.employerId) {
-                await EmployerService.updateEmployer(authUser.employerId, updatedData);
-                setProfileData(updatedData);
+                const data = await EmployerService.updateEmployer(authUser.employerId, updatedData);
+                setProfileData(data.data);
                 setIsEditing(false);
                 toast.success("Profile updated successfully!");
             } else {
@@ -158,7 +157,6 @@ const EmployerProfile = () => {
                 </div>
             </div>
 
-            {/* Footer */}
             <Footer />
         </div>
     );

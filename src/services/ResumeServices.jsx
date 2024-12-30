@@ -20,15 +20,15 @@ const ResumeService = {
         }
     },
 
-    downloadResume: async (jobSeekerId, resumeId) => {
+    downloadResume: async (jobSeekerId) => {
         try {
-            const response = await api.get(`/resume/download/${jobSeekerId}/${resumeId}`, {
-                responseType: "blob",
-            });
+            const response = await api.get(`/resume/download/${jobSeekerId}`, { responseType: "blob" });
             return response.data;
         } catch (error) {
-            toast.error("Error downloading resume:", error.response ? error.response.data : error);
-            throw error;
+            if (error.response && error.response.status === 404) {
+                throw new Error("Resume not found");
+            }
+            throw new Error("Failed to download resume");
         }
     },
 
