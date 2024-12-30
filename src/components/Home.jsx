@@ -8,6 +8,7 @@ import SideNav from "./SideNav";
 const Home = () => {
     window.document.title = "Career Crafter";
     const { authUser } = useAuth();
+    console.log(authUser)
 
     return (
         <div className="h-full w-screen text-white flex flex-col overflow-x-hidden">
@@ -52,13 +53,13 @@ const Home = () => {
                                 </p>
                                 <div className="mt-12 space-x-4">
                                     <Link
-                                        to={"/joblistings"}
+                                        to={authUser?.role === "Employer" ? "/employerJobListings" : "/joblistings"}
                                         className="px-6 py-2 bg-green-600 text-white font-bold rounded hover:bg-green-700 transition"
                                     >
                                         Check out Job Listings
                                     </Link>
                                     <Link
-                                        to={authUser?.employer ? "/employerProfile" : "/jobSeekerProfile"}
+                                        to={authUser?.role === "Employer" ? "/employerProfile" : "/jobSeekerProfile"}
                                         className="px-6 py-2 bg-blue-800 font-bold rounded hover:bg-blue-900 transition"
                                     >
                                         Update Profile

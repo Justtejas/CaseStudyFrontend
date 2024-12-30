@@ -4,16 +4,18 @@ import JobListingService from '../services/JobListingServices';
 import { useAuth } from '../context/AuthContext';
 import { Footer } from './Footer';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 const EmployerJobListings = () => {
     const { authUser } = useAuth();
     const [jobListings, setJobListings] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectJobListingId, setSelectedJobListingId] = useState("")
     const [isEditing, setIsEditing] = useState(false);
     const [currentJobListing, setCurrentJobListing] = useState(null);
     const [isViewingApplications, setIsViewingApplications] = useState(false);
     const [currentJobApplications, setCurrentJobApplications] = useState([]);
+    const [showNoJobsModal, setShowNoJobsModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (authUser?.role !== 'Employer') {
@@ -28,23 +30,24 @@ const EmployerJobListings = () => {
         setLoading(true);
         try {
             const response = await JobListingService.fetchJobListingByEmployerId(authUser.employerId);
-            console.log(response)
             const filteredJobListings = response.map((job) => ({
+                jobListingId: job.jobListingId,
                 jobTitle: job.jobTitle,
                 jobDescription: job.jobDescription,
                 companyName: job.companyName,
-                hiringWorkflow: job.hiringWorkflow,
-                eligibilityCriteria: job.eligibilityCriteria,
-                requiredSkills: job.requiredSkills,
-                aboutCompany: job.aboutCompany,
                 location: job.location,
                 salary: job.salary,
-                deadline: job.deadline,
-                vacancyOfJob: job.vacancyOfJob,
+                applications: job.applications,
             }));
             setJobListings(filteredJobListings);
+
+            if (filteredJobListings.length === 0) {
+                setShowNoJobsModal(true);
+            }
         } catch (error) {
-            toast.error(error?.response?.data?.message);
+            if (error) {
+                setShowNoJobsModal(true);
+            }
         } finally {
             setLoading(false);
         }
@@ -52,12 +55,11 @@ const EmployerJobListings = () => {
 
     const handleDelete = async (jobListingId) => {
         try {
-            console.log(jobListingId)
-            await JobListingService.deleteJobListing(jobListingId);
-            toast.success('Job listing deleted successfully');
+            const data = await JobListingService.deleteJobListing(jobListingId);
+            toast.success(data);
             fetchEmployerJobListings();
         } catch (error) {
-            toast.error('Error deleting job listing');
+            toast.error(error?.response?.data?.message || 'Error deleting job listing.');
         }
     };
 
@@ -73,7 +75,7 @@ const EmployerJobListings = () => {
             setIsEditing(false);
             fetchEmployerJobListings();
         } catch (error) {
-            toast.error('Error updating job listing');
+            toast.error(error?.response?.data?.message || 'Error updating job listing.');
         }
     };
 
@@ -84,19 +86,22 @@ const EmployerJobListings = () => {
 
     const handleViewApplications = async (jobListingId) => {
         try {
-            const job = jobListings.find(job => job.jobListingId === jobListingId);
-            if (job?.applications?.$values) {
-                setCurrentJobApplications(job?.$values || []);
-                setIsViewingApplications(true);
-            }
+            const job = jobListings.find((job) => job.jobListingId === jobListingId);
+            setCurrentJobApplications(job?.applications || []);
+            setIsViewingApplications(true);
         } catch (error) {
-            toast.error(error);
+            toast.error(error?.response?.data?.message || 'Error fetching applications.');
         }
     };
 
     const closeApplicationsModal = () => {
         setIsViewingApplications(false);
         setCurrentJobApplications([]);
+    };
+
+    const closeNoJobsModal = () => {
+        setShowNoJobsModal(false);
+        navigate("/")
     };
 
     return (
@@ -127,7 +132,6 @@ const EmployerJobListings = () => {
                                     >
                                         Edit
                                     </button>
-                                    {console.log(job)}
                                     <button
                                         className="bg-red-600 text-white px-4 py-2 rounded-md"
                                         onClick={() => handleDelete(job.jobListingId)}
@@ -147,39 +151,63 @@ const EmployerJobListings = () => {
                 )}
             </div>
 
-            {/* Edit Job Modal */}
+            {showNoJobsModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-lg max-w-lg w-full space-y-6">
+                        <h2 className="text-3xl font-bold text-center text-red-600">No Job Listings</h2>
+                        <p className="text-center text-gray-700">
+                            You have not created any job listings yet. Start creating job listings to manage them here.
+                        </p>
+                        <div className="mt-6">
+                            <button
+                                className="bg-blue-600 text-white p-3 rounded w-full"
+                                onClick={closeNoJobsModal}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {isEditing && currentJobListing && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded-lg max-w-lg w-full space-y-6">
                         <h2 className="text-3xl font-bold text-center text-blue-800">Edit Job Listing</h2>
-
                         <div className="space-y-4">
                             <input
                                 type="text"
                                 className="w-full p-3 border border-gray-300 rounded-md"
                                 value={currentJobListing.jobTitle}
-                                onChange={(e) => setCurrentJobListing({ ...currentJobListing, jobTitle: e.target.value })}
+                                onChange={(e) =>
+                                    setCurrentJobListing({ ...currentJobListing, jobTitle: e.target.value })
+                                }
                             />
                             <input
                                 type="text"
                                 className="w-full p-3 border border-gray-300 rounded-md"
                                 value={currentJobListing.companyName}
-                                onChange={(e) => setCurrentJobListing({ ...currentJobListing, companyName: e.target.value })}
+                                onChange={(e) =>
+                                    setCurrentJobListing({ ...currentJobListing, companyName: e.target.value })
+                                }
                             />
                             <input
                                 type="text"
                                 className="w-full p-3 border border-gray-300 rounded-md"
                                 value={currentJobListing.location}
-                                onChange={(e) => setCurrentJobListing({ ...currentJobListing, location: e.target.value })}
+                                onChange={(e) =>
+                                    setCurrentJobListing({ ...currentJobListing, location: e.target.value })
+                                }
                             />
                             <input
                                 type="number"
                                 className="w-full p-3 border border-gray-300 rounded-md"
                                 value={currentJobListing.salary}
-                                onChange={(e) => setCurrentJobListing({ ...currentJobListing, salary: e.target.value })}
+                                onChange={(e) =>
+                                    setCurrentJobListing({ ...currentJobListing, salary: e.target.value })
+                                }
                             />
                         </div>
-
                         <div className="mt-6 flex justify-between gap-4">
                             <button
                                 className="bg-blue-600 text-white p-3 rounded w-full"
@@ -198,28 +226,27 @@ const EmployerJobListings = () => {
                 </div>
             )}
 
-            {/* View Applications Modal */}
             {isViewingApplications && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded-lg max-w-lg w-full space-y-6">
                         <h2 className="text-3xl font-bold text-center text-blue-800">Applications</h2>
-
                         <div className="space-y-4">
-                            {currentJobApplications.length === 0 ? (
-                                <p className="text-center text-red-500">No applications for this job listing.</p>
+                            {console.log(currentJobApplications)}
+                            {currentJobApplications.$values.length === 0 ? (
+                                <p className="text-center text-red-500">
+                                    No applications found for this job listing.
+                                </p>
                             ) : (
                                 <ul className="space-y-4">
-                                    {currentJobApplications.map((application, index) => (
+                                    {currentJobApplications.$values.map((application, index) => (
                                         <li key={index} className="p-4 border-b">
                                             <p><strong>Applicant:</strong> {application.applicantName}</p>
                                             <p><strong>Email:</strong> {application.applicantEmail}</p>
-                                            {/* Add other application details as needed */}
                                         </li>
                                     ))}
                                 </ul>
                             )}
                         </div>
-
                         <div className="mt-6">
                             <button
                                 className="bg-red-600 text-white p-3 rounded w-full"

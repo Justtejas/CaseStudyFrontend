@@ -43,6 +43,7 @@ const EmployerProfile = () => {
 
     const handleSave = async () => {
         const { $id, password, ...updatedData } = formData;
+
         try {
             if (authUser?.employerId) {
                 await EmployerService.updateEmployer(authUser.employerId, updatedData);
@@ -53,7 +54,17 @@ const EmployerProfile = () => {
                 toast.error("Profile ID is missing");
             }
         } catch (error) {
-            toast.error(error?.response?.data?.message);
+            if (error?.response?.data?.errors) {
+                Object.entries(error.response.data.errors).forEach(([field, messages]) => {
+                    messages.forEach((message) => {
+                        toast.error(`${field}: ${message}`);
+                    });
+                });
+            } else if (error?.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An unexpected error occurred. Please try again.");
+            }
         }
     };
 

@@ -14,6 +14,8 @@ const RegisterEmployer = () => {
         companyName: "",
         contactPhone: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -29,19 +31,20 @@ const RegisterEmployer = () => {
             return;
         }
 
-        try {
-            const response = await registerEmployer(formData);
-            console.log(response)
-            if (response.success) {
-                toast.success("Employer registered successfully!");
-                navigate("/login");
-            }
-        } catch (error) {
-            console.error("Registration error", error);
-            toast.error("An error occurred during registration. Please try again.");
+        const response = await registerEmployer(formData);
+        console.log(response);
+        if (response.success) {
+            toast.success("Employer registered successfully!");
+            navigate("/login");
         }
-    };
-
+        if (response.errors) {
+            Object.entries(response.errors).forEach(([field, messages]) => {
+                messages.forEach((message) => {
+                    toast.error(`${field}: ${message}`);
+                });
+            });
+        }
+    }
     return (
         <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-xl mx-auto">
             <h2 className="text-3xl font-semibold mb-8 text-center">Register as Employer</h2>
@@ -92,12 +95,12 @@ const RegisterEmployer = () => {
                     />
                 </div>
 
-                <div>
+                <div className="relative">
                     <label htmlFor="password" className="block text-sm font-medium mb-2">
                         Password
                     </label>
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         id="password"
                         value={formData.password}
@@ -106,14 +109,21 @@ const RegisterEmployer = () => {
                         className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
                         required
                     />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 mt-8 right-3 flex items-center text-gray-500"
+                    >
+                        {showPassword ? "Hide" : "Show"}
+                    </button>
                 </div>
 
-                <div>
+                <div className="relative">
                     <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
                         Confirm Password
                     </label>
                     <input
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         name="confirmPassword"
                         id="confirmPassword"
                         value={formData.confirmPassword}
@@ -121,6 +131,13 @@ const RegisterEmployer = () => {
                         className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
                         required
                     />
+                    <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute inset-y-0 mt-8 right-3 flex items-center text-gray-500"
+                    >
+                        {showConfirmPassword ? "Hide" : "Show"}
+                    </button>
                 </div>
 
                 <div>
@@ -183,25 +200,21 @@ const RegisterEmployer = () => {
 
             <div className="mt-6 text-center">
                 <p>
-                    <a href="/registerJobSeeker" className="text-blue-500 hover:underline">
+                    <Link to="/registerJobSeeker" className="text-blue-500 hover:underline">
                         Register as Job Seeker?
-                    </a>
+                    </Link>
+                </p>
+                <p>
+                    <Link to="/login" className="text-blue-500 hover:underline">
+                        Already have an account?
+                    </Link>
+                </p>
+                <p>
+                    <Link to="/" className="text-blue-500 hover:underline">
+                        Go Back To Home
+                    </Link>
                 </p>
             </div>
-            <Link className="mt-6 text-center">
-                <p>
-                    <a href="/login" className="text-blue-500 hover:underline">
-                        Already have an account?
-                    </a>
-                </p>
-            </Link>
-            <Link className="mt-6 text-center">
-                <p>
-                    <a href="/" className="text-blue-500 hover:underline">
-                    Go Back To Home
-                    </a>
-                </p>
-            </Link>
         </div>
     );
 };

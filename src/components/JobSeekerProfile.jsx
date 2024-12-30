@@ -43,7 +43,8 @@ const JobSeekerProfile = () => {
     const handleSave = async () => {
         try {
             if (authUser?.jobSeekerId) {
-                await JobSeekerService.updateJobSeeker(authUser.jobSeekerId, formData);
+                const data = await JobSeekerService.updateJobSeeker(authUser.jobSeekerId, formData);
+                console.log(data);
                 setProfileData(formData);
                 setIsEditing(false);
                 toast.success("Profile updated successfully!");
@@ -51,8 +52,26 @@ const JobSeekerProfile = () => {
                 toast.error("Profile ID is missing");
             }
         } catch (error) {
-            toast.error(error?.response?.data?.message || "Failed to update profile");
+            const responseErrors = error?.response?.data?.errors;
+
+            if (responseErrors) {
+                Object.entries(responseErrors).forEach(([field, messages]) => {
+                    messages.forEach((message) => {
+                        toast.error(`${field}: ${message}`);
+                    });
+                });
+            } else {
+                toast.error(error?.response?.data?.message || "Failed to update profile");
+            }
         }
+    };
+
+    const formatDate = (date) => {
+        return new Intl.DateTimeFormat("en-CA", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        }).format(new Date(date));
     };
 
     if (loading) {
@@ -80,22 +99,7 @@ const JobSeekerProfile = () => {
                     <h1 className="text-center text-2xl font-bold mb-4 text-blue-900">Job Seeker Profile</h1>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {Object.entries(profileData).map(([key, value]) => {
-                            if (key === "gender" && isEditing) {
-                                return (
-                                    <div key={key} className="flex flex-col">
-                                        <label className="font-semibold text-sm mb-2 capitalize">Gender</label>
-                                        <select
-                                            name="gender"
-                                            value={formData.gender || ""}
-                                            onChange={handleInputChange}
-                                            className="border rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                        >
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                );
-                            }
+                            const isDateField = key.toLowerCase().includes("date") && !isNaN(Date.parse(value));
 
                             return (
                                 <div key={key} className="flex flex-col">
@@ -103,13 +107,25 @@ const JobSeekerProfile = () => {
                                         {key.replace(/([A-Z])/g, " $1")}
                                     </label>
                                     {isEditing ? (
-                                        <input
-                                            type={key === "email" ? "email" : "text"}
-                                            name={key}
-                                            value={formData[key] || ""}
-                                            onChange={handleInputChange}
-                                            className="border rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                        />
+                                        isDateField ? (
+                                            <input
+                                                type="date"
+                                                name={key}
+                                                value={formData[key] ? formatDate(formData[key]) : ""}
+                                                onChange={handleInputChange}
+                                                className="border rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                            />
+                                        ) : (
+                                            <input
+                                                type={key === "email" ? "email" : "text"}
+                                                name={key}
+                                                value={formData[key] || ""}
+                                                onChange={handleInputChange}
+                                                className="border rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                            />
+                                        )
+                                    ) : isDateField ? (
+                                        <p className="bg-gray-100 p-2 rounded-md">{formatDate(value)}</p>
                                     ) : (
                                         <p className="bg-gray-100 p-2 rounded-md">{value}</p>
                                     )}

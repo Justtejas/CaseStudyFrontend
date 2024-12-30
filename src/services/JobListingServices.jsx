@@ -29,21 +29,19 @@ const JobListingService = {
         try {
             const response = await api.get(`/JobListing/GetJobListingsByEmployerId/${employerId}`);
             if (!response.data || !response.data.data || !Array.isArray(response.data.data.$values)) {
-                throw new Error('Invalid response format or no job listings found');
+                throw new Error('No job listings found');
             }
             return response.data.data.$values;
         } catch (error) {
+            console.log(error)
             console.error(error.response?.data?.Error || 'Error fetching job listing details');
             throw error;
         }
     },
     async deleteJobListing(jobListingId) {
-        console.log(jobListingId);
         try {
             const response = await api.delete(`JobListing/DeleteJobListing/${jobListingId}`);
-            console.log(response);
-            console.success(response.data?.Message || 'Job listing deleted successfully');
-            return response.data;
+            return response.data?.message;
         } catch (error) {
             console.error(error.response?.data?.Error || 'Error deleting job listing');
             throw error;
