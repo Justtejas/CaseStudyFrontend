@@ -100,8 +100,18 @@ const ApplicationList = () => {
                                     <span className="font-semibold">Application Date:</span>{" "}
                                     {new Date(app.applicationDate).toLocaleDateString()}
                                 </p>
-                                <p className="text-sm ">
-                                    <span className="font-semibold text-gray-600">Status:</span> <span className={`${app.applicationStatus === "Cancelled" ? "text-red-800 font-bold" : "text-gray-600"}`}>{app.applicationStatus}</span>
+                                <p className="text-sm">
+                                    <span className="font-semibold text-gray-600">Status: </span>
+                                    <span
+                                        className={`font-bold ${app.applicationStatus === "Cancelled"
+                                            ? "text-red-800"
+                                            : app.applicationStatus === "Confirmed"
+                                                ? "text-green-600"
+                                                : "text-yellow-600"
+                                            }`}
+                                    >
+                                        {app.applicationStatus}
+                                    </span>
                                 </p>
                                 {jobListings[app.jobListingId] ? (
                                     <div className="mt-4 bg-gray-100 rounded p-3">
@@ -136,7 +146,7 @@ const ApplicationList = () => {
                                         Failed to load job listing details.
                                     </p>
                                 )}
-                                {app.applicationStatus !== "Cancelled" && (
+                                {app.applicationStatus !== "Cancelled" && app.applicationStatus !== "Confirmed" && (
                                     <button
                                         onClick={() => handleCancel(app.applicationId)}
                                         className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"

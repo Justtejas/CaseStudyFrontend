@@ -7,19 +7,20 @@ const ResumeService = {
         try {
             const formData = new FormData();
             formData.append("file", file);
+
             const response = await api.post("/resume/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            toast.success("Resume Uploaded Successfully")
             return response.data;
         } catch (error) {
-            toast.error("Error uploading resume:", error.response ? error.response.data : error);
+            toast.error(
+                `Error uploading resume: ${error.response?.data?.message || error.message}`
+            );
             throw error;
         }
     },
-
     downloadResume: async (jobSeekerId) => {
         try {
             const response = await api.get(`/resume/download/${jobSeekerId}`, { responseType: "blob" });

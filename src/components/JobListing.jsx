@@ -5,6 +5,7 @@ import JobListingService from '../services/JobListingServices';
 import ApplicationService from '../services/ApplicationService';
 import Header from './Header';
 import { Footer } from './Footer';
+import { toast } from 'react-toastify';
 
 let debounceTimeout;
 
@@ -30,8 +31,11 @@ const JobListing = () => {
         setLoading(true);
         try {
             const data = await JobListingService.fetchAllJobListings();
-            setJobListings(data);
-            setFilteredListings(data);
+            console.log(data)
+            const today = new Date();
+            const futureJobListings = data.filter(job => new Date(job.deadline) > today);
+            setJobListings(futureJobListings);
+            setFilteredListings(futureJobListings);
         } catch (error) {
             console.error('Error fetching job listings:', error);
         } finally {
@@ -65,11 +69,12 @@ const JobListing = () => {
 
     const applyForJob = async (jobListingId) => {
         try {
-            const applicationData = { jobListingId, jobSeekerId: authUser.id };
+            const applicationData = { jobListingId, jobSeekerId: authUser.jobSeekerId };
             await ApplicationService.createApplication(applicationData);
-            alert('Application submitted successfully');
+            toast.success('Application submitted successfully');
         } catch (error) {
-            alert('Error submitting application');
+            console.log(error)
+            toast.success(error?.response?.data?.message);
         }
     };
 
@@ -158,6 +163,12 @@ const JobListing = () => {
                             </p>
                             <p>
                                 <strong className="text-blue-700">Location:</strong> {selectedJob.location}
+                            </p>
+                            <p>
+                                <strong className="text-blue-700">Salary:</strong> ${selectedJob.salary}
+                            </p>
+                            <p>
+                                <strong className="text-blue-700">Deadline:</strong> {new Date(selectedJob.deadline).toLocaleString()}
                             </p>
                             <p>
                                 <strong className="text-blue-700">Salary:</strong> ${selectedJob.salary}

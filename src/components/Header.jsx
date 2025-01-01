@@ -9,11 +9,11 @@ export const Header = () => {
     const { loading, logout } = useLogout();
 
     return (
-        <header className="bg-gradient-to-r from-slate-800 to-purple-900 text-white shadow-md">
+        <header className="w-screen bg-gradient-to-r from-slate-800 to-purple-900 text-white shadow-md">
             <div className="container mx-auto flex justify-between items-center py-8 px-8">
                 <nav className="flex gap-12">
                     <h1
-                        className="text-4xl -ml-36 font-bold cursor-pointer hover:text-purple-300 transition"
+                        className="text-4xl  font-bold cursor-pointer hover:text-purple-300 transition"
                         onClick={() => navigate("/")}
                     >
                         CareerCrafter
@@ -37,7 +37,7 @@ export const Header = () => {
                         !loading ? (
                             <div className="mt-2">
                                 <button
-                                    className="px-6 py-6 text-2xl -mr-32 bg-zinc-500 text-white rounded-lg shadow-lg transition-transform transform active:scale-95 hover:bg-blue-600"
+                                    className="px-6 py-6 text-2xl bg-zinc-500 text-white rounded-lg shadow-lg transition-transform transform active:scale-95 hover:bg-blue-600"
                                     onClick={logout}
                                 >
                                     Logout

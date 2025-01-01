@@ -97,14 +97,38 @@ const EmployerJobListings = () => {
 
     const handleViewApplications = async (jobListingId) => {
         try {
-            const data = await ApplicationService.getApplicationByJobListingId(jobListingId)
-            console.log(data.data.$values)
+            const data = await ApplicationService.getApplicationByJobListingId(jobListingId);
             setCurrentJobApplications(data.data.$values || []);
             setIsViewingApplications(true);
         } catch (error) {
-            toast.error(error?.response?.data?.message || 'Error fetching applications.');
+            if (error?.response?.status === 404) {
+                setCurrentJobApplications([]);
+                setIsViewingApplications(true);
+            } else {
+                toast.error(error?.response?.data?.message || 'Error fetching applications.');
+            }
         }
     };
+    const updateApplicationStatus = async (applicationId, status, jobListingId) => {
+        const validStatuses = ['Confirmed', 'Pending', 'Cancelled'];
+
+        if (!validStatuses.includes(status)) {
+            toast.error("Invalid application status.");
+            return;
+        }
+        const data = await ApplicationService.getApplicationByJobListingId(jobListingId);
+        setCurrentJobApplications(data.data.$values || []);
+
+        try {
+            await ApplicationService.updateApplication(applicationId, status);
+            toast.success(`Application ${status.toLowerCase()} successfully!`);
+
+        } catch (error) {
+            console.error(`Failed to update application status to ${status}:`, error);
+            toast.error(`Failed to ${status.toLowerCase()} the application.`);
+        }
+    };
+
 
     const closeApplicationsModal = () => {
         setIsViewingApplications(false);
@@ -118,7 +142,6 @@ const EmployerJobListings = () => {
     const fetchJobSeekerDetails = async (jobSeekerId, applicationIndex) => {
         try {
             const jobSeeker = await JobSeekerService.getJobSeekerByJobSeekerId(jobSeekerId);
-            console.log(jobSeeker)
             const data = jobSeeker.data;
             const updatedApplications = [...currentJobApplications];
             updatedApplications[applicationIndex] = {
@@ -133,11 +156,19 @@ const EmployerJobListings = () => {
 
     const handleDownloadResume = async (jobSeekerId) => {
         try {
+            const jobApplication = currentJobApplications.find(job => job?.data?.jobSeekerId === jobSeekerId);
+
+            if (!jobApplication) {
+                toast.error("Job application not found");
+                return;
+            }
+
             const resumeBlob = await ResumeService.downloadResume(jobSeekerId);
+            const jobSeekerName = jobApplication?.data?.jobSeekerName || jobSeekerId;
             const url = window.URL.createObjectURL(new Blob([resumeBlob]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `resume_${jobSeekerId}.pdf`);
+            link.setAttribute('download', `resume_${jobSeekerName}.pdf`);
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -358,7 +389,19 @@ const EmployerJobListings = () => {
                                     {currentJobApplications.map((application, index) => (
                                         <li key={index} className="p-4 border-b">
                                             <p><strong>Application Date:</strong> {new Date(application.applicationDate).toLocaleDateString()}</p>
-                                            <p><strong>Status:</strong> {application.applicationStatus}</p>
+                                            <p>
+                                                <span className="font-bold ">Status: </span>
+                                                <span
+                                                    className={`font-bold ${application.applicationStatus === "Cancelled"
+                                                        ? "text-red-800"
+                                                        : application.applicationStatus === "Confirmed"
+                                                            ? "text-green-600"
+                                                            : "text-yellow-600"
+                                                        }`}
+                                                >
+                                                    {application.applicationStatus}
+                                                </span>
+                                            </p>
                                             {console.log(application)}
                                             {application.data ? (
                                                 <div className="space-y-2">
@@ -367,17 +410,39 @@ const EmployerJobListings = () => {
                                                     <p><strong>Phone:</strong> {application.data.contactPhone}</p>
                                                     <div className="flex space-x-4">
                                                         <button
-                                                            className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                                                            onClick={() => navigate(`/jobSeekerProfile/${application.jobSeeker.jobSeekerId}`)}
-                                                        >
-                                                            View Profile
-                                                        </button>
-                                                        <button
                                                             className="bg-green-600 text-white px-4 py-2 rounded-md"
                                                             onClick={() => handleDownloadResume(application.data.jobSeekerId)}
                                                         >
                                                             Download Resume
                                                         </button>
+                                                        {application.applicationStatus === "Pending" && (
+                                                            <>
+                                                                <button
+                                                                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                                                                    onClick={() =>
+                                                                        updateApplicationStatus(
+                                                                            application.applicationId,
+                                                                            "Confirmed",
+                                                                            application.jobListingId
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Confirm Application
+                                                                </button>
+                                                                <button
+                                                                    className="bg-red-600 text-white px-4 py-2 rounded-md"
+                                                                    onClick={() =>
+                                                                        updateApplicationStatus(
+                                                                            application.applicationId,
+                                                                            "Cancelled",
+                                                                            application.jobListingId
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Cancel Application
+                                                                </button>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -385,7 +450,7 @@ const EmployerJobListings = () => {
                                                     className="bg-yellow-600 text-white px-4 py-2 rounded-md"
                                                     onClick={() => fetchJobSeekerDetails(application.jobSeekerId, index)}
                                                 >
-                                                    Fetch JobSeeker Info
+                                                    Check more information
                                                 </button>
                                             )}
                                         </li>

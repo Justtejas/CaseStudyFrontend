@@ -7,7 +7,6 @@ const ApplicationService = {
             const response = await api.get('/application/GetAllApplications');
             return response.data;
         } catch (error) {
-            console.error('Error fetching all applications:', error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -17,7 +16,6 @@ const ApplicationService = {
             const response = await api.get(`/application/GetApplicationById/${applicationId}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching application with ID ${applicationId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -27,7 +25,6 @@ const ApplicationService = {
             const response = await api.get(`/application/GetApplicationByJSId/${jobSeekerId}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching applications for JobSeeker ID ${jobSeekerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -37,7 +34,6 @@ const ApplicationService = {
             const response = await api.get(`/application/GetApplicationByEmployerId/${employerId}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching applications for Employer ID ${employerId}:`, error.response ? error.response.data : error);
             throw error;
         }
     },
@@ -47,7 +43,7 @@ const ApplicationService = {
             const response = await api.get(`/application/GetApplicationByListingId/${jobListingId}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching applications for Job Listing ID ${jobListingId}:`, error.response ? error.response.data : error);
+            console.error(error)
             throw error;
         }
     },
@@ -57,7 +53,6 @@ const ApplicationService = {
             const response = await api.post('/application/CreateApplication', applicationData);
             return response.data;
         } catch (error) {
-            console.error('Error creating application:', error.response ? error.response.data : error);
             throw error;
         }
     },
