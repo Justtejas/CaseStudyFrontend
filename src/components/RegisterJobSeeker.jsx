@@ -26,6 +26,8 @@ const RegisterJobSeeker = () => {
         startDate: "",
         endDate: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,6 +44,7 @@ const RegisterJobSeeker = () => {
 
         try {
             const response = await registerJobSeeker(formData);
+            console.log(response)
             if (response.success) {
                 toast.success("Job Seeker registered successfully!");
                 navigate("/login");
@@ -58,13 +61,13 @@ const RegisterJobSeeker = () => {
             }
         } catch (error) {
             toast.error("An error occurred while registering.");
-            console.error("Registration Error:", error);
+            console.log("Registration Error:", error);
         }
     };
 
     return (
-        <div className="min-h-screen w-5/6 flex flex-col items-center justify-center">
-            <div className="w-full h-5/6 max-w-6xl mx-auto mt-12 p-10 bg-white rounded-lg shadow-lg">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center">
+            <div className="w-5/6 h-5/6 max-w-6xl mx-auto mt-12 p-10 bg-white rounded-lg shadow-lg">
                 <h2 className="text-3xl font-bold mb-8 text-center text-gray-700">
                     Job Seeker Registration
                 </h2>
@@ -127,7 +130,7 @@ const RegisterJobSeeker = () => {
                         />
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <label
                             htmlFor="password"
                             className="block text-sm font-medium mb-2 text-gray-600"
@@ -135,7 +138,7 @@ const RegisterJobSeeker = () => {
                             Password
                         </label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             name="password"
                             id="password"
                             value={formData.password}
@@ -145,9 +148,16 @@ const RegisterJobSeeker = () => {
                             required
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 mt-8 right-3 flex items-center text-gray-500"
+                        >
+                            {showPassword ? "Hide" : "Show"}
+                        </button>
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <label
                             htmlFor="confirmPassword"
                             className="block text-sm font-medium mb-2 text-gray-600"
@@ -155,7 +165,7 @@ const RegisterJobSeeker = () => {
                             Confirm Password
                         </label>
                         <input
-                            type="password"
+                            type={showConfirmPassword ? "text" : "password"}
                             name="confirmPassword"
                             id="confirmPassword"
                             value={formData.confirmPassword}
@@ -163,6 +173,13 @@ const RegisterJobSeeker = () => {
                             required
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute inset-y-0 mt-8 right-3 flex items-center text-gray-500"
+                        >
+                            {showConfirmPassword ? "Hide" : "Show"}
+                        </button>
                     </div>
 
                     <div>

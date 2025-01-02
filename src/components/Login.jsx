@@ -6,6 +6,7 @@ const Login = () => {
     window.document.title = "CareerCrafter | Login";
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
     const [role, setRole] = useState("employer");
     const { loading, login } = useLogin();
 
@@ -16,7 +17,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col lg:w-2/4 items-center justify-center min-w-96 mx-auto ">
+        <div className="flex flex-col lg:w-1/3 items-center justify-center min-w-96 mx-auto ">
             <div className="w-full p-16 rounded-lg shadow-lg bg-gray-700 bg-opacity-90">
                 <h1 className="text-4xl font-semibold text-center text-white">
                     Login to <span className="text-blue-400">Career Crafter</span>
@@ -51,10 +52,10 @@ const Login = () => {
                         />
                     </div>
 
-                    <div className="my-6">
+                    <div className="my-6 relative">
                         <label className="block text-lg font-medium text-white mb-2">Password</label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             autoComplete="current-password"
                             className="w-full input input-bordered h-12 rounded-md px-4 text-lg "
                             value={password}
@@ -62,6 +63,13 @@ const Login = () => {
                             name="password"
                             placeholder="Enter Password"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 mt-8 right-3 flex items-center text-gray-500"
+                        >
+                            {showPassword ? "Hide" : "Show"}
+                        </button>
                     </div>
                     <button
                         type="submit"

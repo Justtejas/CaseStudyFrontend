@@ -32,7 +32,6 @@ const RegisterEmployer = () => {
         }
 
         const response = await registerEmployer(formData);
-        console.log(response);
         if (response.success) {
             toast.success("Employer registered successfully!");
             navigate("/login");
