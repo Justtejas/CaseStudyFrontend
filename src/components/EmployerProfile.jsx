@@ -13,6 +13,7 @@ const EmployerProfile = () => {
 
     const { authUser } = useAuth();
 
+    document.title = "Career Crafter | Profile";
     useEffect(() => {
         const fetchProfile = async () => {
             try {

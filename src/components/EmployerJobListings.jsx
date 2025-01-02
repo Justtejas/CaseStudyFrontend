@@ -19,6 +19,7 @@ const EmployerJobListings = () => {
     const [currentJobApplications, setCurrentJobApplications] = useState([]);
     const [showNoJobsModal, setShowNoJobsModal] = useState(false);
     const navigate = useNavigate();
+    document.title = "Career Crafter | Job Listings";
 
     useEffect(() => {
         if (authUser?.role !== 'Employer') {

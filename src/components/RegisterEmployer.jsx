@@ -17,6 +17,7 @@ const RegisterEmployer = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
+    document.title = "Career Crafter |   Employer Sign Up";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,7 +46,7 @@ const RegisterEmployer = () => {
         }
     }
     return (
-        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-xl mx-auto">
+        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-xl mx-auto h-4/5">
             <h2 className="text-3xl font-semibold mb-8 text-center">Register as Employer</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>

@@ -53,6 +53,7 @@ const AddResume = () => {
             toast.error('An error occurred during the upload.');
         }
     };
+    document.title = "Career Crafter | Add Resume";
 
     return (
         <div className="h-full">

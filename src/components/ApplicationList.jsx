@@ -13,6 +13,7 @@ const ApplicationList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { authUser } = useAuth();
+    document.title = "Career Crafter | Applications";
 
     const fetchJobListingDetails = async (applications) => {
         const jobListingData = {};

@@ -18,6 +18,7 @@ const JobListing = () => {
     const [selectedJob, setSelectedJob] = useState(null);
     const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
     const navigate = useNavigate();
+    document.title = "Career Crafter | Job Listings";
 
     useEffect(() => {
         if (authUser?.role !== 'JobSeeker') {

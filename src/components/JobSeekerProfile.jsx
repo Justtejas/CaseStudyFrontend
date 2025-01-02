@@ -12,6 +12,7 @@ const JobSeekerProfile = () => {
     const [loading, setLoading] = useState(true);
 
     const { authUser } = useAuth();
+    document.title = "Career Crafter | Profile";
 
     useEffect(() => {
         const fetchProfile = async () => {

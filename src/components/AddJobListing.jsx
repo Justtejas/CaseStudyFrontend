@@ -48,7 +48,7 @@ const AddJobListing = () => {
             toast.error("Failed to post job listing.");
         }
     };
-
+    document.title = "Career Crafter | Add Job Listing";
     return (
         <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-blue-900 via-blue-800 to-blue-600 text-black">
             <Header />

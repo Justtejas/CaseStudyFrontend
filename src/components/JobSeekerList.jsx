@@ -10,6 +10,7 @@ const JobSeekersList = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const [filteredJobSeeker, setFilteredJobSeeker] = useState([]);
+    document.title = "Career Crafter | Job Seekers";
 
     useEffect(() => {
         fetchJobSeekers();

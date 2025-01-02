@@ -28,6 +28,7 @@ const RegisterJobSeeker = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    document.title = "Career Crafter | Job Seeker Sign Up";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +67,7 @@ const RegisterJobSeeker = () => {
     };
 
     return (
-        <div className="min-h-screen w-full flex flex-col items-center justify-center">
+        <div className="min-h-screen my-8 w-full flex flex-col items-center justify-center">
             <div className="w-5/6 h-5/6 max-w-6xl mx-auto mt-12 p-10 bg-white rounded-lg shadow-lg">
                 <h2 className="text-3xl font-bold mb-8 text-center text-gray-700">
                     Job Seeker Registration
@@ -260,6 +261,11 @@ const RegisterJobSeeker = () => {
                     <p>
                         <Link to="/login" className="text-blue-500 hover:underline">
                             Already have an account?
+                        </Link>
+                    </p>
+                    <p>
+                        <Link to="/registerEmployer" className="text-blue-500 hover:underline">
+                        Register as an Employer
                         </Link>
                     </p>
                     <p>
